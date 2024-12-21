@@ -3,18 +3,21 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Draw
+  - Tile
+  - Discard
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Tile
   - Water
   - UI
-  - MousePlane
-  - UnitLayer
-  - Obstackles
-  - PostProccess
+  - 
+  - Mouse
+  - Draw
+  - 
   - 
   - 
   - 
