@@ -55,6 +55,9 @@ public class VisulizeTile : MonoBehaviour
         tileObject.transform.SetParent(parent);
         tileObject.transform.localPosition = Vector3.zero;
         tileObject.transform.localRotation = Quaternion.identity;
+        TileDraggable tileDraggable = tileObject.GetComponent<TileDraggable>();
+        tileDraggable.SetTile(tile);
+        
         return tileObject;
     }
 }

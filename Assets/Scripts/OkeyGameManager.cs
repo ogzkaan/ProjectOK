@@ -1,17 +1,20 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using static UnityEngine.GraphicsBuffer;
 
 public class OkeyGameManager : MonoBehaviour
 {
     public static OkeyGameManager instance;
 
     private const int TILE_SET = 1;
-    private const int INITIAL_TILES = 14;
+    private const int INITIAL_TILES = 21;
 
     private GameState currentState;
-    PlayerManager playerManager;
+    public PlayerManager PlayerManager => playerManager;
+    private PlayerManager playerManager;
     VisulizeTile visulizeTile;
 
     private List<Tile> tilePile;
@@ -19,9 +22,12 @@ public class OkeyGameManager : MonoBehaviour
 
     private List<Transform> TileHolderList = new List<Transform>();
     [SerializeField] private Transform tileGrid;
+    [SerializeField] private TextMeshProUGUI handScoreText;
 
     private Tile indicatorTile;
     private Tile okeyTile;
+
+    private int handScore = 0;
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -32,12 +38,15 @@ public class OkeyGameManager : MonoBehaviour
         {
             instance = this;
         }
+
+        Application.targetFrameRate = 144;
     }
     private void Start()
     {
         playerManager = new PlayerManager(1);
         visulizeTile = GetComponent<VisulizeTile>();
         InitializeGame();
+        discardPile = new List<Tile>();
     }
     private void Update()
     {
@@ -48,7 +57,22 @@ public class OkeyGameManager : MonoBehaviour
                 Debug.Log("PlayerTiles: name" + tile.TileObject.name);
                 
             }
-            
+            foreach(Tile tile in discardPile)
+            {
+                Debug.Log("Discard Pile : " + tile.TileObject.name);
+               
+            }
+            foreach(Tile tile in tilePile)
+            {
+                Debug.Log("Tile Pile :" + tile.ToString());
+                
+            }
+            Debug.Log("Okey: " + okeyTile.ToString());
+            Debug.Log("Indicator: " + indicatorTile.ToString());
+
+            Debug.Log("Tile Pile Tile Count" + tilePile.Count);
+            Debug.Log("Discard Tile Count" + discardPile.Count);
+            Debug.Log("Player Tile Count" + playerManager.Tiles.Count);
         }
     }
     private void InitializeGame()
@@ -120,6 +144,43 @@ public class OkeyGameManager : MonoBehaviour
         tilePile.RemoveAt(0);
         return tile;
     }
+    public void DiscardTile(TileDraggable tileDraggable)
+    {
+        {
+            Tile tile = tileDraggable.GetTile();
+            tileDraggable.ResetCollider();
+
+            // Update game state
+            discardPile.Add(tile);
+            tilePile.Remove(tile);
+            playerManager.RemoveTile(tile);
+
+            // Get tile's GameObject
+            GameObject tileGameObject = tile.TileObject;
+            if (tileGameObject == null)
+            {
+                Debug.LogError("Tile GameObject is null!");
+                return;
+            }
+
+            Vector3 worldPosition = tileGameObject.transform.position; // Save position
+            tileGameObject.transform.SetParent(null);
+            tileGameObject.transform.position = worldPosition; // Restore position
+
+            // Apply physics
+            Rigidbody rb = tileGameObject.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.isKinematic = false;
+                rb.useGravity = true;
+            }
+            else
+            {
+                Debug.LogError("Rigidbody not found on tile!");
+            }
+
+        }
+    }
     public void AddTileToPlayerHand(Tile tile)
     {
         playerManager.AddTile(tile);
@@ -127,7 +188,6 @@ public class OkeyGameManager : MonoBehaviour
     private void SetupIndicatorAndOkey()
     {
         indicatorTile = DrawTile();
-        // Okey is the next number after the indicator
         int okeyNumber = (indicatorTile.Number % 13) + 1;
         okeyTile = new Tile(okeyNumber, indicatorTile.Color);
     }
@@ -143,13 +203,38 @@ public class OkeyGameManager : MonoBehaviour
             {
                 if (tileHolder.childCount<1)
                 {
+                    
                     GameObject createdTile=visulizeTile.CreateTile(tile, tileHolder);
                     tile.TileObject = createdTile;
+                    if (tile.ToString() == GetOkeyTile().ToString())
+                    {
+                        tile.IsOkey = true;
+                        tile.TileObject.transform.Rotate(new Vector3(0f, 180f, 0f));
+                    }
                     break;
                 }
             }
         }
     }
-
+    public Tile GetOkeyTile()
+    {
+        return okeyTile;
+    }
+    public void CheckForSets()
+    {
+        playerManager.CheckForSets();
+    }
+    public void CalculateScore()
+    {
+        handScore = 0;
+        foreach (Tile tile in PlayerManager.Tiles)
+        {
+            if (tile.IsInRunOrSet)
+            {
+                handScore += tile.Number;
+            }
+        }
+        handScoreText.text = handScore.ToString();
+    }
 
 }

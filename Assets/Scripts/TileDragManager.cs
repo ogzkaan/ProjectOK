@@ -11,6 +11,7 @@ public class TileDragManager : MonoBehaviour
 
     private Camera mainCamera;
     private IDraggable currentDraggable;
+    private IDraggable hoveredDraggable;
     private Vector3 dragOffset;
     private bool isDragging = false;
 
@@ -20,6 +21,10 @@ public class TileDragManager : MonoBehaviour
         else Destroy(gameObject);
 
         mainCamera = Camera.main;
+    }
+    private void Start()
+    {
+        
     }
     private void Update()
     {
@@ -35,6 +40,10 @@ public class TileDragManager : MonoBehaviour
         else if (isDragging)
         {
             UpdateDrag();
+        }
+        else
+        {
+            HandleHover();
         }
     }
     private void TryStartDrag()
@@ -71,7 +80,6 @@ public class TileDragManager : MonoBehaviour
             currentDraggable.OnDrag(targetPosition);
         }
     }
-
     private void EndDrag()
     {
         if (currentDraggable != null)
@@ -80,6 +88,8 @@ public class TileDragManager : MonoBehaviour
             currentDraggable = null;
         }
         isDragging = false;
+        OkeyGameManager.instance.PlayerManager.CheckForSets();
+        OkeyGameManager.instance.CalculateScore();
     }
     private Vector3 GetMouseWorldPosition()
     {
@@ -89,4 +99,28 @@ public class TileDragManager : MonoBehaviour
         plane.Raycast(ray, out dist);
         return ray.GetPoint(dist);
     }
+    private void HandleHover()
+    {
+        Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, draggableLayer))
+        {
+            var draggable = hit.transform.GetComponent<IDraggable>();
+            if (draggable != null && draggable != hoveredDraggable && hit.transform.CompareTag("Tile"))
+            {
+                if (hoveredDraggable != null)
+                {
+                    hoveredDraggable.OnHoverExit();
+                }
+                hoveredDraggable = draggable;
+                hoveredDraggable.OnHoverEnter();
+            }
+        }
+        else if (hoveredDraggable != null)
+        {
+            hoveredDraggable.OnHoverExit();
+            hoveredDraggable = null;
+        }
+    }
+
 }
+

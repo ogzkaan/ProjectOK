@@ -1,4 +1,6 @@
 using UnityEngine;
+using DG.Tweening;
+using Unity.VisualScripting;
 
 public class TileDraggable : MonoBehaviour, IDraggable
 {
@@ -8,7 +10,31 @@ public class TileDraggable : MonoBehaviour, IDraggable
 
     public Transform GetTransform() => transform;
 
-   public void OnStartDrag()
+    private Vector3 initialPosition;
+    private Vector3 initialRotation;
+    private Vector3 initialScale;
+
+    private Vector3 initalColliderSize;
+    private Vector3 initalColliderCenter;
+
+    BoxCollider boxCollider;
+
+    [SerializeField]private bool onDiscard = false;
+
+    private Tile tile;
+    private void Awake()
+    {
+        initialPosition = transform.localPosition;
+        initialRotation = transform.localEulerAngles;
+        initialScale = transform.localScale;
+
+        boxCollider = GetComponent<BoxCollider>();
+
+        initalColliderSize = boxCollider.size = new Vector3(0.09421441f, 0.007363497f, 0.06595007f);
+        initalColliderCenter = boxCollider.center = Vector3.zero;
+
+    }
+    public void OnStartDrag()
     {
         if (CompareTag("Tile"))
         {
@@ -57,28 +83,44 @@ public class TileDraggable : MonoBehaviour, IDraggable
     {
         if (CompareTag("Tile"))
         {
-            TileSlotManager targetSlot = FindNearestSlot();
+            if (onDiscard)
+            {
+                this.transform.SetParent(null);
+                this.gameObject.tag = "Untagged";
+                this.gameObject.layer = 0;
+                this.enabled = false;
+                OkeyGameManager.instance.DiscardTile(this);
+                if (currentSlot != null)
+                {
+                    currentSlot.Highlight(false);
+                }
 
-            if (targetSlot != null && targetSlot.CanAcceptTile())
-            {
-                // Snap to new slot
-                PlaceInSlot(targetSlot);
             }
-            else
+            else if(!onDiscard)
             {
-                // Return to original position
-                ReturnToOriginalPosition();
-            }
+                TileSlotManager targetSlot = FindNearestSlot();
 
-            // Clear highlights
-            if (currentSlot != null)
-            {
-                currentSlot.Highlight(false);
+                if (targetSlot != null && targetSlot.CanAcceptTile())
+                {
+                    // Snap to new slot
+                    PlaceInSlot(targetSlot);
+                }
+                else
+                {
+                    // Return to original position
+                    ReturnToOriginalPosition();
+                }
+
+                // Clear highlights
+                if (currentSlot != null)
+                {
+                    currentSlot.Highlight(false);
+                }
             }
+            
         }
         
     }
-
     private TileSlotManager FindNearestSlot()
     {
         TileSlotManager[] slots = FindObjectsOfType<TileSlotManager>();
@@ -102,13 +144,53 @@ public class TileDraggable : MonoBehaviour, IDraggable
     {
         transform.SetParent(slot.transform);
         transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
     }
 
     private void ReturnToOriginalPosition()
     {
         transform.SetParent(originalParent);
         transform.position = originalPosition;
-        transform.localRotation = Quaternion.identity;
     }
+   public void OnHoverEnter()
+    {
+        transform.DOLocalMove(initialPosition + new Vector3(0, 0.02f, 0), 0.1f).SetEase(Ease.OutBack);
+        SetColider();
+    }
+
+    public void OnHoverExit()
+    {
+        if (this.transform.CompareTag("Tile"))
+        {
+            transform.DOLocalMove(initialPosition, 0.1f).SetEase(Ease.InOutSine);
+            ResetCollider();
+        }
+        
+    }
+    public void SetOnDiscard(bool onDiscard)
+    {
+        this.onDiscard = onDiscard;
+    }
+    public bool GetOnDiscard()
+    {
+        return this.onDiscard;
+    }
+    public Tile GetTile()
+    {
+        return tile;
+    }
+    public void SetTile(Tile newTile)
+    {
+        tile = newTile;
+    }
+    public void ResetCollider()
+    {
+        boxCollider.size = initalColliderSize;
+        boxCollider.center = initalColliderCenter;
+    }
+    public void SetColider()
+    {
+        boxCollider.size = new Vector3(0.09421441f, 0.05025354f, 0.06595007f);
+        boxCollider.center = new Vector3(-8.278369e-10f, -0.02144508f, -5.363562e-17f);
+    }
+
 }

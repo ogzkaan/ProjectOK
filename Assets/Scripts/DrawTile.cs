@@ -23,17 +23,16 @@ public class DrawTile : MonoBehaviour
         Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
-            if (hit.rigidbody.transform.CompareTag("Draw"))
+            if ( hit.rigidbody != null && hit.rigidbody.transform.CompareTag("Draw"))
             {
                 Tile tile = TileCreation();
 
 
                 GameObject tileObject = tile.TileObject;
                 TileDraggable tileDraggable = tileObject.GetComponent<TileDraggable>();
-
-                // Trigger drag through TileDragManager
                 TileDragManager.Instance.StartDragging(tileDraggable);
             }
+
         }
     }
     private Tile TileCreation()
