@@ -88,8 +88,6 @@ public class TileDragManager : MonoBehaviour
             currentDraggable = null;
         }
         isDragging = false;
-        OkeyGameManager.instance.PlayerManager.CheckForSets();
-        OkeyGameManager.instance.CalculateScore();
     }
     private Vector3 GetMouseWorldPosition()
     {

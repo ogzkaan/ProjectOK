@@ -1372,6 +1372,7 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
+  - component: {fileID: 330585548}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1497,6 +1498,21 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &330585548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8856cc3a3b4c34741adb2be02c132080, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  swayAmount: 7.43
+  smoothness: 0.43
+  maxSwayAngle: 5
 --- !u!1 &336407086
 GameObject:
   m_ObjectHideFlags: 0
@@ -3307,6 +3323,7 @@ GameObject:
   - component: {fileID: 1184563842}
   - component: {fileID: 1184563843}
   - component: {fileID: 1184563844}
+  - component: {fileID: 1184563845}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3341,8 +3358,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab352864a2383fd44867cd5aa5d40196, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  setChecker: {fileID: 1184563845}
   tileGrid: {fileID: 1341118137}
   handScoreText: {fileID: 280729480}
+  rainbow: {fileID: 2100000, guid: 61b609b4e0d129b478f63058d5b6f9e9, type: 2}
+  defaultMat: {fileID: 2100000, guid: 0d1730cd4a169594d90463df85e24710, type: 2}
 --- !u!114 &1184563843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3373,6 +3393,18 @@ MonoBehaviour:
     m_Bits: 8
   dragHeight: 0.02
   snapThreshold: 0.1
+--- !u!114 &1184563845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184563839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bc6a05e0e6043e4b855f51472635408, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1203777891
 GameObject:
   m_ObjectHideFlags: 0

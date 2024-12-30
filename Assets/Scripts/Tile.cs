@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -10,8 +10,7 @@ public class Tile
     public bool IsFake { get; private set; }      // Each color has 2 sets of tiles
     public GameObject TileObject { get; set; }
     public bool IsOkey { get; set; }
-    public bool IsInRunOrSet { get; set; }
-
+    public bool IsInSet { get; set; }
     public Tile (int number, TileColor color, bool isFake = false, bool isOkey = false)
     {
         Number = number;

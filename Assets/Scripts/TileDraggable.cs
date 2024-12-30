@@ -119,6 +119,7 @@ public class TileDraggable : MonoBehaviour, IDraggable
             }
             
         }
+        OkeyGameManager.instance.CheckSets();
         
     }
     private TileSlotManager FindNearestSlot()
