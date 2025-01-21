@@ -31,6 +31,7 @@ public class TileDragManager : MonoBehaviour
         if (Mouse.current == null) return;
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
+            if (OkeyGameManager.instance.IsDealing()) return;
             TryStartDrag();
         }
         else if (Mouse.current.leftButton.wasReleasedThisFrame)

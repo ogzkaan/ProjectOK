@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: BG 1
-  m_Shader: {fileID: -6465566751694194690, guid: d405809236b1c8349a38f9591305feda, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 96c5ff2ea2b41c347bd346c7ad74a95c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 7e20a5d1edc487d4e9c6edf21f165213, type: 3}
+        m_Texture: {fileID: 2800000, guid: 17bcd32b4cb493942ada4a3295e3608d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -44,7 +44,7 @@ Material:
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &6138036682994400938
+--- !u!114 &6456660598807257263
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

@@ -7,6 +7,8 @@ TagManager:
   - Draw
   - Tile
   - Discard
+  - Sort
+  - Open
   layers:
   - Default
   - TransparentFX

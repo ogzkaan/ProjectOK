@@ -240,28 +240,28 @@ MonoBehaviour:
     dimension: 1
   bloomIntensity:
     m_OverrideState: 1
-    m_Value: 0.03
+    m_Value: 0.09
   bloomThreshold:
     m_OverrideState: 1
-    m_Value: 0.91
+    m_Value: 2.64
   bloomConservativeThreshold:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 1
   bloomSpread:
-    m_OverrideState: 0
-    m_Value: 0.5
+    m_OverrideState: 1
+    m_Value: 0.784
   bloomMaxBrightness:
     m_OverrideState: 0
-    m_Value: 1000
+    m_Value: 992.64
   bloomTint:
     m_OverrideState: 0
     m_Value: {r: 0.5, g: 0.5, b: 1, a: 0}
   bloomDepthAtten:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 153
   bloomNearAtten:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 1.32
   bloomExcludeLayers:
     m_OverrideState: 0
     m_Value: 0
@@ -274,11 +274,11 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
   bloomAntiflicker:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 1
   bloomResolution:
     m_OverrideState: 0
-    m_Value: 1
+    m_Value: 10
   bloomQuickerBlur:
     m_OverrideState: 0
     m_Value: 0
@@ -340,8 +340,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}
   anamorphicFlaresIntensity:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.03
   anamorphicFlaresThreshold:
     m_OverrideState: 0
     m_Value: 0.75
@@ -500,8 +500,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0.01
   lensDirtIntensity:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.91
   lensDirtThreshold:
     m_OverrideState: 0
     m_Value: 0.5
@@ -514,13 +514,13 @@ MonoBehaviour:
     m_Value: 3
   chromaticAberrationIntensity:
     m_OverrideState: 1
-    m_Value: 0.0038
+    m_Value: 0.0044
   chromaticAberrationShift:
     m_OverrideState: 0
     m_Value: 0.28
   chromaticAberrationSmoothing:
     m_OverrideState: 1
-    m_Value: 11.4
+    m_Value: 13.8
   chromaticAberrationSeparatePass:
     m_OverrideState: 0
     m_Value: 1
@@ -837,3 +837,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   components:
   - {fileID: -8789101440266858808}
+  - {fileID: 4726103204192814069}
+--- !u!114 &4726103204192814069
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29fa0085f50d5e54f8144f766051a691, type: 3}
+  m_Name: FilmGrain
+  m_EditorClassIdentifier: 
+  active: 1
+  type:
+    m_OverrideState: 1
+    m_Value: 10
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.138
+  response:
+    m_OverrideState: 1
+    m_Value: 0.938
+  texture:
+    m_OverrideState: 1
+    m_Value: {fileID: 2800000, guid: 6e068c75dabe1734489366eac09de9d4, type: 3}

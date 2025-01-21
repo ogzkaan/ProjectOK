@@ -49,9 +49,16 @@ public class SetChecker
 
         if (currentGroup.Count >= 3 && IsValidGroup(currentGroup))
         {
-            foreach (Tile tile in currentGroup)
+
+            for (int i = 0; i < currentGroup.Count; i++)
             {
+                Tile tile = currentGroup[i];
                 tile.IsInSet = true;
+                if (tile.IsOkey)
+                {
+                    Tile prevTile = currentGroup[i - 1];
+                    tile.OkeyNumber = prevTile.Number;
+                }
             }
             allGroups.Add(currentGroup);
         }
@@ -89,9 +96,15 @@ public class SetChecker
 
         if (currentRun.Count >= 3 && IsValidRun(currentRun))
         {
-            foreach (Tile tile in currentRun)
+            for (int i = 0; i < currentRun.Count; i++)
             {
+                Tile tile = currentRun[i];
                 tile.IsInSet = true;
+                if (tile.IsOkey)
+                {
+                    Tile prevTile=currentRun[i-1];
+                    tile.OkeyNumber = prevTile.Number+1;
+                }
             }
 
             allRuns.Add(currentRun);
@@ -144,7 +157,6 @@ public class SetChecker
 
         return true;
     }
-
     private bool AreAdjacent(Tile tile1, Tile tile2)
     {
         if (tile1.TileObject == null || tile2.TileObject == null)
@@ -161,7 +173,7 @@ public class SetChecker
 
         return Mathf.Abs(index1 - index2) == 1;
     }
-    private void ResetSetBool(PlayerManager playerManager)
+    public void ResetSetBool(PlayerManager playerManager)
     {
         foreach (Tile tile in playerManager.Tiles)
         {
