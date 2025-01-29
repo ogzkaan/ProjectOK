@@ -19,7 +19,6 @@ public class SetChecker
             CheckForAdjacentRun(playerTiles, startIdx, allRuns);
         }
     }
-
     private void CheckForAdjacentGroup(List<Tile> playerTiles, int startIdx, List<List<Tile>> allGroups)
     {
         List<Tile> currentGroup = new List<Tile> { playerTiles[startIdx] };
@@ -63,7 +62,6 @@ public class SetChecker
             allGroups.Add(currentGroup);
         }
     }
-
     private void CheckForAdjacentRun(List<Tile> playerTiles, int startIdx, List<List<Tile>> allRuns)
     {
         List<Tile> currentRun = new List<Tile> { playerTiles[startIdx] };
@@ -104,13 +102,13 @@ public class SetChecker
                 {
                     Tile prevTile=currentRun[i-1];
                     tile.OkeyNumber = prevTile.Number+1;
+                    tile.OkeyColor =  prevTile.Color;
                 }
             }
 
             allRuns.Add(currentRun);
         }
     }
-
     private bool IsValidGroup(List<Tile> tiles)
     {
         if (tiles.Count < 3 || tiles.Count > 4) return false;

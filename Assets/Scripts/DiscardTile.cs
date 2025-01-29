@@ -11,5 +11,6 @@ public class DiscardTile : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         tileDraggable.SetOnDiscard(false);
+        
     }
 }

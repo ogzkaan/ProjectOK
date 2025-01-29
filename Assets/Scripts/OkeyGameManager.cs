@@ -1,13 +1,13 @@
 ﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 
-
 public class OkeyGameManager : MonoBehaviour
 {
-    private const int INITIAL_TILES = 15;
+    private const int INITIAL_TILES = 22;
 
     public static OkeyGameManager instance;
 
@@ -17,12 +17,15 @@ public class OkeyGameManager : MonoBehaviour
     [SerializeField] private TileVisualManager tileVisualManager;
     private TilePileManager tilePileManager;
     [SerializeField]private VisulizeTile visulizeTile;
-    private GameState currentState;
+    public GameState currentState;
 
     [Header("References")]
     [SerializeField] private Transform tileGrid;
     [SerializeField] private TextMeshProUGUI handScoreText;
     [SerializeField] private TextMeshPro targetScoreText;
+    [SerializeField] private TextMeshProUGUI drawText;
+    [SerializeField] private TextMeshProUGUI turnText;
+    [SerializeField] private GameObject errorMessage;
 
     [Header("Deal Animation Settings")]
     [SerializeField] private Transform dealStartPosition;
@@ -36,6 +39,8 @@ public class OkeyGameManager : MonoBehaviour
 
     [Header("Game Parameters")]
     [SerializeField] private int targetScore = 101;
+    [SerializeField] private int drawCount;
+    
 
     private List<Transform> TileHolderList = new List<Transform>();
     private List<Tile> tilePile;
@@ -48,6 +53,7 @@ public class OkeyGameManager : MonoBehaviour
         SetupSingleton();
 
         Application.targetFrameRate = 144;
+        Cursor.visible = true;
     }
     private void Start()
     {
@@ -55,7 +61,10 @@ public class OkeyGameManager : MonoBehaviour
         InitializeGame();
 
         playerManager.onSortingComplete.AddListener(() => {
+            Debug.Log("a");
+            CheckSets();
         });
+
     }
     private void Update()
     {
@@ -100,8 +109,10 @@ public class OkeyGameManager : MonoBehaviour
         tilePileManager.ShuffleTiles();
         SetupIndicatorAndOkey();
         StartDealAnimation();
-        currentState = GameState.PlayerTurn;
+        currentState = GameState.DistributingTiles;
         targetScoreText.text = targetScore.ToString();
+        drawText.text = drawCount.ToString();
+        SetCurrentState(currentState);
     }
     private void InitializeManagers()
     {
@@ -232,49 +243,94 @@ public class OkeyGameManager : MonoBehaviour
     }
     public void SortByColor()
     {
+        if (currentState == GameState.DistributingTiles)
+        {
+            return;
+        }
+        ResetSetAndHighlight();
         playerManager.SortTilesByColor();
     }
     public void SortByNumber()
     {
+        if (currentState == GameState.DistributingTiles)
+        {
+            return;
+        }
+        ResetSetAndHighlight();
         playerManager.SortTilesByNumber();
     }
     public void OpenHand()
     {
+        if (currentState == GameState.DistributingTiles)
+        {
+            return;
+        }
         if (handScore >= targetScore)
         {
-            foreach(Tile tile in PlayerManager.Tiles)
+            DOTween.Kill("OpenHandAnimation");
+            Sequence openHandSequence = DOTween.Sequence().SetId("OpenHandAnimation");
+
+            foreach (Tile tile in PlayerManager.Tiles)
             {
                 if (tile.IsInSet)
                 {
                     int tileNumber = tile.Number;
+                    TileColor tileColor = tile.Color;
                     if (tile.IsOkey)
-                        tileNumber = tile.OkeyNumber;
-                    tile.TileObject.transform.SetParent(null);
-                    switch (tile.Color)
                     {
-                        case TileColor.Red:
-                            tile.TileObject.transform.position = openStartPosition.transform.position + new Vector3(openOffset * tileNumber, 0, 0);
-                            break;
-                        case TileColor.Black:
-                            tile.TileObject.transform.position = openStartPosition.transform.position + new Vector3(openOffset * tileNumber, 0, 0.1f);
-                            break;
-                        case TileColor.Blue:
-                            tile.TileObject.transform.position = openStartPosition.transform.position + new Vector3(openOffset * tileNumber, 0, 0.2f);
-                            break;
-                        case TileColor.Yellow:
-                            tile.TileObject.transform.position = openStartPosition.transform.position + new Vector3(openOffset * tileNumber, 0, 0.3f);
-                            break;
+                        tileNumber = tile.OkeyNumber;
+                        tileColor = tile.OkeyColor;
                     }
-              
-                    tile.TileObject.transform.eulerAngles = new Vector3(0, 90, 0);
-                    //PlayerManager.RemoveTile(tile);
+
+                    tile.TileObject.transform.SetParent(null);
+
+                    Vector3 targetPosition = GetTileOpenPosition(openStartPosition, tileColor, tileNumber);
+
+                    // Animate position and rotation
+                    openHandSequence.Insert(0, tile.TileObject.transform.DOJump(targetPosition,0.2f,1,0.5f)
+                        .SetEase(Ease.OutQuad));
+
+                    openHandSequence.Insert(0, tile.TileObject.transform.DORotate(new Vector3(0, 90, 0), 0.5f)
+                        .SetEase(Ease.OutQuad));
+
+                    PlayerManager.AddTileToRevealedSets(tile);
                     tile.TileObject.GetComponent<BoxCollider>().enabled = false;
                 }
             }
+
+            openHandSequence.OnComplete(() => {
+                ResetSetAndHighlight();
+                foreach (Tile tile in playerManager.RevealedSets)
+                {
+                    playerManager.RemoveTile(tile);
+                }
+            });
         }
+    }
+    private Vector3 GetTileOpenPosition(Transform startPosition, TileColor tileColor, int tileNumber)
+    {
+        float zOffset = 0;
+        switch (tileColor)
+        {
+            case TileColor.Red:
+                zOffset = 0f;
+                break;
+            case TileColor.Black:
+                zOffset = 0.1f;
+                break;
+            case TileColor.Blue:
+                zOffset = 0.2f;
+                break;
+            case TileColor.Yellow:
+                zOffset = 0.3f;
+                break;
+        }
+
+        return startPosition.transform.position + new Vector3(openOffset * tileNumber, 0, zOffset);
     }
     private void StartDealAnimation()
     {
+
         isDealing = true;
         DOTween.Kill("DealAnimation");
         Sequence dealSequence = DOTween.Sequence().SetId("DealAnimation");
@@ -348,6 +404,7 @@ public class OkeyGameManager : MonoBehaviour
         {
             isDealing = false;
             CheckSets(); // Optional: Check sets after dealing is complete
+            SetCurrentState(GameState.Discard);
         });
     }
     public bool IsDealing() => isDealing;
@@ -356,5 +413,26 @@ public class OkeyGameManager : MonoBehaviour
         setChecker.ResetSetBool(playerManager);
         tileVisualManager.ResetHighlight(playerManager);
     }
-
+    public GameState GetCurrentState()
+    {
+       return currentState;
+    }
+    public void SetCurrentState(GameState gameState)
+    {
+        currentState = gameState;
+        turnText.text = currentState.ToString();
+    }
+    public void ErrorMessageControl()
+    {
+        Debug.Log("a");
+        errorMessage.SetActive(true);
+        StartCoroutine(DisableError());
+        
+    }
+    IEnumerator DisableError()
+    {
+        yield return new WaitForSeconds(2f);
+        errorMessage.SetActive(false);
+    }
+    
 }

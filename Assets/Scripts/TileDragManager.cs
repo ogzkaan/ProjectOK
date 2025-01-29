@@ -49,6 +49,10 @@ public class TileDragManager : MonoBehaviour
     }
     private void TryStartDrag()
     {
+        if (OkeyGameManager.instance.GetCurrentState() == GameState.DistributingTiles)
+        {
+            return;
+        }
         Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, draggableLayer))
         {

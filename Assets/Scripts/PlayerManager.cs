@@ -9,7 +9,7 @@ public class PlayerManager
     public int Id { get; private set; }
     public List<Tile> Tiles { get; private set; }
     public List<Tile> orderedTiles { get; private set; }
-    public List<List<Tile>> RevealedSets { get; private set; }
+    public List<Tile> RevealedSets { get; private set; }
     private HashSet<Tile> UsedOkeys { get; set; }
 
     private const int MIN_SET_SIZE = 3;
@@ -23,7 +23,7 @@ public class PlayerManager
     {
         Id = id;
         Tiles = new List<Tile>();
-        RevealedSets = new List<List<Tile>>();
+        RevealedSets = new List<Tile>();
         UsedOkeys = new HashSet<Tile>();
     }
 
@@ -36,6 +36,10 @@ public class PlayerManager
     {
         bool removed = Tiles.Remove(tile);
         return removed;
+    }
+    public void AddTileToRevealedSets(Tile tile)
+    {
+        RevealedSets.Add(tile);
     }
 
     public List<Tile> GetTilesOrderedByPosition()
@@ -56,7 +60,6 @@ public class PlayerManager
                     .ToList();
         UpdateTilePositions();
     }
-
     public void SortTilesByNumber()
     {
         Tiles = Tiles.OrderBy(t => t.Number)
@@ -64,7 +67,6 @@ public class PlayerManager
                     .ToList();
         UpdateTilePositions();
     }
-
     private void UpdateTilePositions()
     {
         var tileHolders = GameObject.Find("TileGrid").GetComponentsInChildren<Transform>()
@@ -134,8 +136,8 @@ public class PlayerManager
         {
             onSortingComplete?.Invoke();
         });
-    }
 
+    }
     public void CancelSorting()
     {
         DOTween.Kill("TileSort");

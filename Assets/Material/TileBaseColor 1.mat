@@ -370,7 +370,7 @@ Material:
     - _MetalHighlightContrast: 2
     - _MetalHighlightDensity: 1
     - _MetalMaskToggle: 0
-    - _Metallic: 0.964
+    - _Metallic: 0.398
     - _MetallicMapToggle: 0
     - _NegativeFade: 1
     - _NormalIntensity: 1
@@ -460,7 +460,7 @@ Material:
     - _SmokeNoiseScale: 0.5
     - _SmokeSmoothness: 1
     - _SmokeVertexSeed: 0
-    - _Smoothness: 0.697
+    - _Smoothness: 0.639
     - _SmoothnessTextureChannel: 0
     - _SourceAlphaDissolveFade: -0.71
     - _SourceAlphaDissolveInvert: 0
@@ -553,7 +553,7 @@ Material:
     m_Colors:
     - _AddColorColor: {r: 2.996078, g: 0, b: 0, a: 0}
     - _AlphaTintColor: {r: 95.87451, g: 5.019608, b: 95.87451, a: 0}
-    - _BaseColor: {r: 0.99841094, g: 1, b: 0.8066038, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BlackTintColor: {r: 0, g: 0, b: 1, a: 0}
     - _BurnEdgeColor: {r: 11.98431, g: 1.129412, b: 0.1254902, a: 0}
     - _BurnEdgeNoiseScale: {r: 0.3, g: 0.3, b: 0, a: 0}
@@ -570,7 +570,7 @@ Material:
     - _CamouflageDistortionSpeed: {r: 0.1, g: 0.1, b: 0, a: 0}
     - _CamouflageNoiseScaleA: {r: 0.25, g: 0.25, b: 0, a: 0}
     - _CamouflageNoiseScaleB: {r: 0.25, g: 0.25, b: 0, a: 0}
-    - _Color: {r: 0.9984109, g: 1, b: 0.8066038, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorReplaceFromColor: {r: 0, g: 0, b: 0, a: 0}
     - _ColorReplaceToColor: {r: 0, g: 0, b: 0.2, a: 0}
     - _CustomFadeNoiseScale: {r: 1, g: 1, b: 0, a: 0}

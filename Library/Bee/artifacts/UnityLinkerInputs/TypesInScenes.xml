@@ -11,7 +11,6 @@
 		<type fullname="MouseWorld" preserve="nothing"/>
 		<type fullname="OkeyGameManager" preserve="nothing"/>
 		<type fullname="PointerColisionHandle" preserve="nothing"/>
-		<type fullname="Readme" preserve="nothing"/>
 		<type fullname="SlimUI.ModernMenu.ThemedUIData" preserve="nothing"/>
 		<type fullname="SlimUI.ModernMenu.ThemedUIElement" preserve="nothing"/>
 		<type fullname="SortTiles" preserve="nothing"/>

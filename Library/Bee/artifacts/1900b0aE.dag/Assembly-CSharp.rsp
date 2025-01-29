@@ -465,6 +465,7 @@
 "Assets/Scripts/PlayerManager.cs"
 "Assets/Scripts/SetChecker.cs"
 "Assets/Scripts/SortTiles.cs"
+"Assets/Scripts/StateMachine.cs"
 "Assets/Scripts/Tile.cs"
 "Assets/Scripts/TileDraggable.cs"
 "Assets/Scripts/TileDragManager.cs"

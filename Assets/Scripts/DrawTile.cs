@@ -20,11 +20,17 @@ public class DrawTile : MonoBehaviour
     }
     private void CheckDrag()
     {
+        
         Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
             if ( hit.rigidbody != null && hit.rigidbody.transform.CompareTag("Draw"))
             {
+                if (OkeyGameManager.instance.GetCurrentState() != GameState.Draw)
+                {
+                    OkeyGameManager.instance.ErrorMessageControl();
+                    return;
+                }
                 Tile tile = TileCreation();
 
 
@@ -44,6 +50,7 @@ public class DrawTile : MonoBehaviour
 
         // Place visual tiles and get the tile object
         OkeyGameManager.instance.PlaceVisualTiles();
+        OkeyGameManager.instance.SetCurrentState(GameState.Discard);
         return drawnTile; // Ensure drawnTile.TileObject is properly instantiated
     }
 }

@@ -12,7 +12,6 @@ ScriptsOnlyBuild:
     - MouseWorld
     - OkeyGameManager
     - PointerColisionHandle
-    - Readme
     - SlimUI.ModernMenu.ThemedUIData
     - SlimUI.ModernMenu.ThemedUIElement
     - SortTiles
@@ -118,6 +117,7 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
     - UnityEditor.Graphs.AnimatorControllerTool
@@ -338,10 +338,10 @@ ScriptsOnlyBuild:
     methodName: ResetDebugManager
   - assembly: Assembly-CSharp
     fullTypeName: OkeyGameManager
-    methodName: OpenHand
+    methodName: SortByNumber
   - assembly: Assembly-CSharp
     fullTypeName: OkeyGameManager
-    methodName: SortByNumber
+    methodName: OpenHand
   - assembly: Assembly-CSharp
     fullTypeName: OkeyGameManager
     methodName: SortByColor
@@ -1473,7 +1473,7 @@ ScriptsOnlyBuild:
     className: InputActionAssetEditor
   - hash:
       serializedVersion: 2
-      Hash: 298df30f7d0eee9fdb9aa8238dc69ce7
+      Hash: ae27a59e963f931112ad5dede28bd3b6
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: OkeyGameManager

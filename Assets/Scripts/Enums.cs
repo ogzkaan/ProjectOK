@@ -12,9 +12,7 @@ public enum TileColor
 // GameState.cs
 public enum GameState
 {
-    Setup,
     DistributingTiles,
-    ChoosingMiddleTile,
-    PlayerTurn,
-    GameEnd
+    Draw,
+    Discard
 }

@@ -9,6 +9,7 @@ public class Tile
     public GameObject TileObject { get; set; }
     public bool IsOkey { get; set; }
     public int OkeyNumber { get; set; }
+    public TileColor OkeyColor { get; set; }
     public bool IsInSet { get; set; }
     public Tile (int number, TileColor color, bool isFake = false, bool isOkey = false)
     {

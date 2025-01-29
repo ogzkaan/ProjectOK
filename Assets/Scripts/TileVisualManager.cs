@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,8 +17,16 @@ public class TileVisualManager : MonoBehaviour
                 GameObject tileObject = tile.TileObject;
                 Renderer tileRenderer = tileObject.GetComponent<Renderer>();
                 Material[] materials = tileRenderer.materials;
-                materials[1] = rainbow;
-                tileRenderer.materials = materials;
+                DOTween.To(
+                    () => 0f,
+                    x => {
+                        materials[1] = MaterialLerp(defaultMat, rainbow, x);
+                        tileRenderer.materials = materials;
+                    },
+                    1f,
+                    0.3f
+                ).SetEase(Ease.OutQuad);
+
             }
         }
     }
@@ -34,5 +43,12 @@ public class TileVisualManager : MonoBehaviour
                 tileRenderer.materials = materials;
             }
         }
+    }
+    private Material MaterialLerp(Material from, Material to, float t)
+    {
+        // Create a new material that interpolates between two materials
+        Material lerpedMaterial = new Material(from);
+        lerpedMaterial.Lerp(from, to, t);
+        return lerpedMaterial;
     }
 }

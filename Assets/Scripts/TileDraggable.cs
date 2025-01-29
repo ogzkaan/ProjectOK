@@ -83,8 +83,14 @@ public class TileDraggable : MonoBehaviour, IDraggable
     {
         if (CompareTag("Tile"))
         {
+            if (OkeyGameManager.instance.GetCurrentState() != GameState.Discard && onDiscard)
+            {
+                OkeyGameManager.instance.ErrorMessageControl();
+                onDiscard = false;
+            }
             if (onDiscard)
             {
+                
                 this.transform.SetParent(null);
                 this.gameObject.tag = "Untagged";
                 this.gameObject.layer = 0;
@@ -94,10 +100,12 @@ public class TileDraggable : MonoBehaviour, IDraggable
                 {
                     currentSlot.Highlight(false);
                 }
+                OkeyGameManager.instance.SetCurrentState(GameState.Draw);
 
             }
             else if(!onDiscard)
             {
+
                 TileSlotManager targetSlot = FindNearestSlot();
 
                 if (targetSlot != null && targetSlot.CanAcceptTile())
@@ -154,6 +162,10 @@ public class TileDraggable : MonoBehaviour, IDraggable
     }
    public void OnHoverEnter()
     {
+        if (OkeyGameManager.instance.GetCurrentState() == GameState.DistributingTiles)
+        {
+            return;
+        }
         transform.DOLocalMove(initialPosition + new Vector3(0, 0.02f, 0), 0.1f).SetEase(Ease.OutBack);
         SetColider();
     }
